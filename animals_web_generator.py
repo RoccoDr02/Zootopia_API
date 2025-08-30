@@ -11,15 +11,9 @@ def animal_information(animal_data):
     """ Prints the animals in the JSON file """
     for animal in animal_data:
         print(f"Name: {animal['name']}")
-        for key, value in animal.items():
-            if key == "locations":
-                print("Location: " + value[0])
-            if key == "characteristics":
-                for characteristic, value in value.items():
-                    if characteristic == "diet":
-                        print("Diet: " + value)
-                    if characteristic == "type":
-                        print("Type: " + value)
+        print(f"Diet: {animal['characteristics']['diet']}")
+        print(f"Location: {animal['locations'][0]}")
+        print(f"Type: {animal['characteristics']['type']}")
         print()
 
 
