@@ -10,11 +10,15 @@ def load_data(file_path):
 def animal_information(animal_data):
     """ Prints the animals in the JSON file """
     for animal in animal_data:
-        print(f"Name: {animal['name']}")
-        print(f"Diet: {animal['characteristics']['diet']}")
-        print(f"Location: {animal['locations'][0]}")
-        print(f"Type: {animal['characteristics']['type']}")
-        print()
+        try:
+            print(f"Name: {animal['name']}")
+            print(f"Diet: {animal['characteristics']['diet']}")
+            print(f"Location: {animal['locations'][0]}")
+            print(f"Type: {animal['characteristics']['type']}")
+            print()
+        except KeyError:
+            print()
+            continue
 
 
 animal_information(load_data("animals_data.json"))
