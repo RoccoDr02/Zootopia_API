@@ -21,7 +21,7 @@ def replace_placeholder(html_file, placeholder="__REPLACE_ANIMALS_INFO__"):
     output_lines = []
     for line in html_file:
         if placeholder in line:
-            output_lines.append(animal_information(animal_data=load_data("animals_data.json")))
+            output_lines.append(serialize_animal(animal_data=load_data("animals_data.json")))
         else:
             output_lines.append(line)
     return output_lines
@@ -33,16 +33,17 @@ def write_new_html(file_path, lines):
         handle.writelines(lines)
 
 
-def animal_information(animal_data):
+def serialize_animal(animal_data):
     """ Prints the animals in the JSON file """
     output = ''
     for animal in animal_data:
         try:
-            output += '<li class="cards__item">'
-            output += f"{animal['name']}<br/>\n"
-            output += f"Diet: {animal['characteristics']['diet']}<br/>\n"
-            output += f"Location: {animal['locations'][0]}<br/>\n"
-            output += f"Type: {animal['characteristics']['type']}<br/>\n"
+            output += f'<li class="cards__item">\n'
+            output += f'<div class="card__title">{animal['name']}</div>\n'
+            output += f'<p class="card__text">\n'
+            output += f"<strong>Diet:</strong> {animal['characteristics']['diet']}<br/>\n"
+            output += f"<strong>Location:</strong> {animal['locations'][0]}<br/>\n"
+            output += f"<strong>Type:</strong> {animal['characteristics']['type']}<br/>\n"
             output += '</li>\n'
         except KeyError:
             continue
@@ -52,4 +53,4 @@ html_lines = load_html("animals_template.html")
 html_lines = replace_placeholder(html_lines)
 write_new_html("animals.html", html_lines)
 
-print("datei erstellt.")
+print("HTML-File got generated.")
