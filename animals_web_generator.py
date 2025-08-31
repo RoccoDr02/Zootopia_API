@@ -1,7 +1,5 @@
 import json
 
-from pygame.examples.midi import output_main
-
 
 def load_data(file_path):
     """ Loads a JSON file """
