@@ -1,11 +1,21 @@
 import json
+import requests
 
+def get_animal(animal_name):
+    """ Asks for input and seachring the input using API"""
+    api_key = "UG/NNIDCLpv0fariq0cTsA==O1RjeABZAL0iwScZ"
+    url = "https://api.api-ninjas.com/v1/animals"
+    headers = {"X-Api-Key": api_key}
+    params = {"name": animal_name}
 
-def load_data(file_path):
-    """ Loads a JSON file """
-    with open(file_path, "r") as handle:
-        animal_data = json.load(handle)
-        return animal_data
+    response = requests.get(url, headers=headers, params=params)
+
+    if response.status_code == 200:
+        data = response.json()
+        return data
+    else:
+      print("Error: ", response.status_code, response.text)
+      return []
 
 
 def load_html(file_path):
@@ -17,9 +27,13 @@ def load_html(file_path):
 def replace_placeholder(html_file, placeholder="__REPLACE_ANIMALS_INFO__"):
     """ Replaces the placeholder with the animal information """
     output_lines = []
+
+    searched_name = input("Enter a name of an animal: ").strip()
+    animal_data = get_animal(searched_name)
+
     for line in html_file:
         if placeholder in line:
-            output_lines.append(serialize_animal(animal_data=load_data("animals_data.json")))
+            output_lines.append(serialize_animal(animal_data, searched_name))
         else:
             output_lines.append(line)
     return output_lines
@@ -31,8 +45,11 @@ def write_new_html(file_path, lines):
         handle.writelines(lines)
 
 
-def serialize_animal(animal_data):
-    """ Prints the animals in the JSON file """
+def serialize_animal(animal_data, searched_name):
+    """ Prints the animals in the HTML file or message if not found """
+    if not animal_data:
+        return f"<h2>The animal '{searched_name}' doesn't exist.</h2>"
+
     output = ''
     for animal in animal_data:
         try:
