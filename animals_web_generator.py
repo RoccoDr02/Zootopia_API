@@ -1,21 +1,5 @@
 import json
-import requests
-
-def get_animal(animal_name):
-    """ Asks for input and seachring the input using API"""
-    api_key = "UG/NNIDCLpv0fariq0cTsA==O1RjeABZAL0iwScZ"
-    url = "https://api.api-ninjas.com/v1/animals"
-    headers = {"X-Api-Key": api_key}
-    params = {"name": animal_name}
-
-    response = requests.get(url, headers=headers, params=params)
-
-    if response.status_code == 200:
-        data = response.json()
-        return data
-    else:
-      print("Error: ", response.status_code, response.text)
-      return []
+import data_fetcher
 
 
 def load_html(file_path):
@@ -29,7 +13,7 @@ def replace_placeholder(html_file, placeholder="__REPLACE_ANIMALS_INFO__"):
     output_lines = []
 
     searched_name = input("Enter a name of an animal: ").strip()
-    animal_data = get_animal(searched_name)
+    animal_data = data_fetcher.fetch_data(searched_name)
 
     for line in html_file:
         if placeholder in line:
